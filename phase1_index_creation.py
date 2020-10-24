@@ -1,20 +1,44 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Oct 23 12:50:44 2020
-
-@author: JOYFRED JESURAJA
-"""
 import json
+from nltk.corpus import stopwords 
+from nltk.tokenize import word_tokenize
 
 with open("movies.json", "r") as data_file:
     movies = json.load(data_file)
-    
-title_index = dict()
-for movie in movies:
-    title_index[movie['title']] = movie['id']
 
-description_data = dict()
+def getIndex(key):
+    index = dict()
+    stop_words = set(stopwords.words('english'))
+    
+    for movie in movies:
+        word_tokens = word_tokenize(movie[key].lower())
+        filtered_tokens = [token for token in word_tokens if not token in stop_words]
+        for token in filtered_tokens:
+            if token not in index:
+                index[token] = [movie['id']]
+            else:
+                index[token].append(movie['id'])
+    return index
+
+def groupIndex(key):
+    index = dict()
+    for movie in movies:
+        for i in movie[key]:
+            if i.lower() not in index:
+                index[i.lower()] = [movie['id']]
+            else:
+                index[i.lower()].append(movie['id'])
+    return index
+    
+    
+
+title_index = getIndex('title')
+description_index = getIndex('description')
+genre_index = groupIndex('genre')    
+stars_index = groupIndex('stars')
+
+year_index = dict()
 for movie in movies:
-    description_data[movie['description']] = movie['id']
-    
-    
+    if movie['year'] not in year_index:
+        year_index[movie['year']] =  [movie['id']]
+    else:
+         year_index[movie['year']].append(movie['id'])
