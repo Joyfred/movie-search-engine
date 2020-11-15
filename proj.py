@@ -7,11 +7,7 @@ from phase2_elasticsearch import elastic_search
 
 
 def search(data):
-	#data['category']
-	#data['query']
-	## do all the querying techniques here and REPLACE dummyData with Query result(follow same format as dummyData)
 	data["result"] = elastic_search(data["category"], data["query"])
-	print("hello worldddd")
 	return data
 
 @app.route('/')
