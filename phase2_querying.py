@@ -17,7 +17,8 @@ movie_description.append(query)
 vectorizer = TfidfVectorizer()
 tfidf = vectorizer.fit_transform(movie_description)
 cosine_similarities = linear_kernel(tfidf[-1], tfidf).flatten()
-related_docs_indices = cosine_similarities.argsort()[-7:-2][::-1]
+#top 5 results excluding the query
+related_docs_indices = cosine_similarities.argsort()[-7:-2][::-1] 
 print(related_docs_indices)
 print(cosine_similarities[related_docs_indices])
 

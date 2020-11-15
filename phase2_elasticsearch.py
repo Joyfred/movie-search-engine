@@ -4,10 +4,7 @@ from elasticsearch_dsl import Search, Q
 import json
 import logging
 
-# es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
-# print(es)
-
-movie_mapping = {
+MOVIE_MAPPING = {
     "properties": {
         "id": {
             "type": "text"
@@ -32,8 +29,19 @@ movie_mapping = {
         },
         "stars": {
             "type": "text"
+        },
+        "imageSource": {
+            "type": "text"    
         }
     }
+}
+
+UI_CATEGORY_FIELD = {
+    "All": [],
+    "Directors": ["directors"],
+    "Genre": ["genre"],
+    "Movie": ["title"],
+    "Stars": ["stars"]    
 }
 
 with open("movies.json", "r") as data_file:
@@ -59,7 +67,7 @@ def create_index(es_object, index_name):
             "number_of_shards": 1,
             "number_of_replicas": 0
         },
-        "mappings": movie_mapping
+        "mappings": MOVIE_MAPPING
     }
 
     try:
@@ -98,14 +106,23 @@ def insert_data_by_bulk(es_object, index, data):
 def create_search_instance(elastic_object, index):
     return Search(using=elastic_object)
 
-es = connect_elasticsearch()
-# create_index(es, "movies")
-# insert_data_by_bulk(es, "movies", movies)
-s = create_search_instance(es, "movies")
-q = Q("query_string", query="downey")
-s = s.query(q)
-response = s.execute()
-results = [{"score": hit["_score"], "movie": hit["_source"]} for hit in response.to_dict()["hits"]["hits"]]
-# print(response.to_dict())
+def elastic_search(category, user_query):
+    if(user_query):
+        user_query += "~"
+    es = connect_elasticsearch()
+    s = create_search_instance(es, "movies_db")
+    q = Q("query_string", query=user_query, fields=UI_CATEGORY_FIELD[category], fuzziness="AUTO")
+    s = s.query(q)[0:1000]
+    response = s.execute()
+    search_result = [hit["_source"] for hit in response.to_dict()["hits"]["hits"]]
+    return search_result
 
-# es.indices.put_mapping(index=["movies"], doc_type="movies", body=movie_mapping)
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.ERROR)
+    es = connect_elasticsearch()
+    # create_index(es, "movies_db")
+    # insert_data_by_bulk(es, "movies_db", movies)
+    # results = [{"score": hit["_score"], "movie": hit["_source"]} for hit in response.to_dict()["hits"]["hits"]]
+    search_result = elastic_search("All", "drama")
+    print(len(search_result))
+    # es.indices.put_mapping(index=["movies"], doc_type="movies", body=MOVIE_MAPPING)
