@@ -19,6 +19,7 @@
                 <option>Genre</option>
                 <option>Directors</option>
                 <option>Stars</option>
+                <option>Custom</option>
               </select>
             </div>
           </div>
@@ -33,18 +34,23 @@
 			Results for '{{ result["category"] }}' containing '{{ result["query"]}}' : 
 		</h3>
 		{% for movie in result["result"] %}
-		<div style="width: 100%; min-height: 100px; border: 1px solid #888; margin-top: 5px; margin-bottom:5px;">
-			<div style="float:left; margin-right: 10px">
-				<img src="{{ movie['imageSource'] }}"/>
-			</div>
-			<div style="float:left;">
-				<h5 style="color: #fff;font-weight:300; margin:2px;" > Movie       : {{ movie['title'] }} </h5>
-				<h5 style="color: #fff;font-weight:300; margin:2px;" > Year        : {{ movie['year'] }} </h5>
-				<h5 style="color: #fff;font-weight:300; margin:2px;" > Genre       : {% for genre in movie["genre"] %} {{ genre}}, {% endfor %}  </h5>
-				<h5 style="color: #fff;font-weight:300; margin:2px;" > Directors   : {% for director in movie["directors"]  %} {{ director}}, {% endfor %} </h5>
-				<h5 style="color: #fff;font-weight:300; margin:2px;" > Stars       : {% for star in movie["stars"] %} {{ star}}, {% endfor %}</h5>
-				<!-- <h4> Description : </p> {{ movie['description'] }} </p> </h4> -->
-			</div>
+		<div style="display: flex; flex-direction: column; width: 100%; min-height: 140px; border: 1px solid #888; margin-top: 5px; margin-bottom:5px;">
+			<div style="display: flex">
+    			<div style="float:left; margin-right: 10px">
+    				<img width="67" height="98" src="{{ movie['imageSource'] }}"/>
+    			</div>
+    			<div style="float:left;">
+    				<h5 style="color: #fff;font-weight:300; margin:2px;" > Movie       : {{ movie['title'] }} </h5>
+    				<h5 style="color: #fff;font-weight:300; margin:2px;" > Year        : {{ movie['year'] }} </h5>
+    				<h5 style="color: #fff;font-weight:300; margin:2px;" > Genre       : {% for genre in movie["genre"] %} {{ genre}}, {% endfor %}  </h5>
+    				<h5 style="color: #fff;font-weight:300; margin:2px;" > Directors   : {% for director in movie["directors"]  %} {{ director}}, {% endfor %} </h5>
+    				<h5 style="color: #fff;font-weight:300; margin:2px;" > Stars       : {% for star in movie["stars"] %} {{ star}}, {% endfor %}</h5>
+    				<h5 style="color: #fff;font-weight:300; margin:2px;" > Rating      : {{ movie['rating'] }} </h5>
+    			</div>
+    		</div>
+    		<div style="float:left;">
+        		<h5 style="color: #fff;font-weight:300; margin:2px;" > Description : {{ movie['description'] }} </h5>
+        	</div>
 		</div>
 		{% endfor %}
       </form>
