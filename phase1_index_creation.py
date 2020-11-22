@@ -45,10 +45,10 @@ for movie in movies:
          year_index[movie['year']].append(movie['id'])
 
 
-query = input("Provide description: ")
-movie_description = []
-for movie in movies:
-    movie_description.append(movie['description'])
+# query = input("Provide description: ")
+# movie_description = []
+# for movie in movies:
+#     movie_description.append(movie['description'])
 
-vectorizer = TfidfVectorizer()
-X = vectorizer.fit_transform(movie_description)
+# vectorizer = TfidfVectorizer()
+# X = vectorizer.fit_transform(movie_description)
