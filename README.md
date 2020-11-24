@@ -25,12 +25,11 @@ Each movie data is considered as a document. Index Creation can be divided into 
 
 * Ranking documents can be divided into 2 fundamental steps:
   * **Modelling documents**:
-  Vector Space Model(VSM) is leveraged to model documents & queries as vectors.
-  Documents and queries are represented as vectors.
-  Normalised tf-idf weighting scheme is used to compute term weights
+    * Vector Space Model(VSM) is leveraged to model documents & queries as vectors.
+    * Normalised tf-idf weighting scheme is used to compute term weights
   * **Ranking documents**:
-  Cosine similarity is used to compute similarity scores between documents & query.
-  Relevant documents in non-increasing order of similarity score are retieved & displayed
+    * Cosine similarity is used to compute similarity scores between documents & query.
+    * Relevant documents in non-increasing order of similarity score are retieved & displayed
 
 ## **Phase 3 - Elasticsearch Integration**
 
